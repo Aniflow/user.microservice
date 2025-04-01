@@ -6,7 +6,7 @@ load_dotenv()
 
 class BaseConfig:
     """Base configuration with common settings."""
-    API_PORT: int = int(os.getenv("API_PORT", "8001"))
+    API_PORT: int = int(os.getenv("API_PORT", "8002"))
     API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
     ALLOW_ORIGINS: str = os.getenv("ALLOWED_ORIGINS", "*")
     ALLOW_METHODS: str = os.getenv("ALLOWED_METHODS", "*")
