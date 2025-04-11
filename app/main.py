@@ -3,9 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import CONFIG
-from .routers.favorites_router import router as favorites_router
 from .routers.user_router import router as user_router
-from .routers.watchlist_router import router as watchlist_router
 
 app = FastAPI(title="Aniflow Anime Microservice")
 
@@ -17,9 +15,7 @@ app.add_middleware(
     allow_credentials=CONFIG.ALLOW_CREDENTIALS,
 )
 
-app.include_router(favorites_router)
 app.include_router(user_router)
-app.include_router(watchlist_router)
 
 
 @app.get("/")

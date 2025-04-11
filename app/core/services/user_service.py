@@ -1,7 +1,11 @@
 from datetime import datetime, timezone
+from typing import List
 
 from ..data.user_repository import UserRepository
 from ...models.user import User
+from ...models.favorite import Favorite
+from ...models.watchlist import Entry
+from ..messaging.kafka_producer import favorite_anime
 
 
 class UserService:
@@ -36,3 +40,53 @@ class UserService:
                 username="Service error",
                 created_at=datetime.now(timezone.utc)
             )
+
+    @staticmethod
+    def get_user_favorites(user_id: int) -> List[Favorite]:
+        """Service method to fetch all user favorites."""
+        try:
+            favorites = UserRepository.get_user_favorites(user_id)
+
+            favorite_list = [Favorite(**{**favorite, "favorite_id": favorite.pop("id")}) for favorite in favorites]  # Noqa: E501
+
+            return favorite_list
+
+        except Exception as e:
+            print(f"Service error: {e}")
+
+            return [
+                Favorite(
+                    favorite_id=0,
+                    user_id=0,
+                    anime_id=0,
+                    favorited_at=datetime.now(timezone.utc)
+                )
+            ]
+
+    @staticmethod
+    def get_user_watchlist(user_id: int) -> List[Entry]:
+        """Service method to fetch all user watchlist entries."""
+        try:
+            watchlist = UserRepository.get_user_watchlist(user_id)
+
+            entry_list = [Entry(**{**entry, "entry_id": entry.pop("id")}) for entry in watchlist]  # Noqa: E501
+
+            return entry_list
+
+        except Exception as e:
+            print(f"Service error: {e}")
+
+            return [
+                Entry(
+                   entry_id=0,
+                   user_id=0,
+                   anime_id=0,
+                   episodes_watched=0,
+                   completed=0,
+                   last_updated=datetime.now(timezone.utc)
+                )
+            ]
+
+    @staticmethod
+    def add_anime_favorite(user_id, anime_id):
+        favorite_anime(user_id, anime_id)
