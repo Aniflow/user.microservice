@@ -28,5 +28,5 @@ class FastAPIUser(HttpUser):
     def get_watchlist(self):
         self.client.get(
             f"/user/{self.user_id}/watchlist",
-            headers=self.header
+            headers=self.headers
         )
