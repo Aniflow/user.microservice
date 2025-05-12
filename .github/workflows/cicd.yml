@@ -60,8 +60,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install locust python-dotenv
+          pip install -r app/requirements.txt
+          pip install locust
 
       - name: Wait for MySQL to be ready
         run: |
