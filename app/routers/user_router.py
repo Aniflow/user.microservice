@@ -29,7 +29,7 @@ async def get_user_watchlist(user_id: int):
 @router.post("favorite")
 async def favorite_anime(request: FavoriteRequest):
     try:
-        UserService.add_anime_favorite(request.user_id, request.anime_id)
+        # UserService.add_anime_favorite(request.user_id, request.anime_id)
         return {"message": "Anime successfully favorited"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

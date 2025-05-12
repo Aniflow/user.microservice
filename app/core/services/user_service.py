@@ -5,7 +5,7 @@ from ..data.user_repository import UserRepository
 from ...models.user import User
 from ...models.favorite import Favorite
 from ...models.watchlist import Entry
-from ..messaging.kafka_producer import favorite_anime
+# from ..messaging.kafka_producer import favorite_anime
 
 
 class UserService:
@@ -87,6 +87,6 @@ class UserService:
                 )
             ]
 
-    @staticmethod
-    def add_anime_favorite(user_id, anime_id):
-        favorite_anime(user_id, anime_id)
+#    @staticmethod
+#    def add_anime_favorite(user_id, anime_id):
+#        favorite_anime(user_id, anime_id)
