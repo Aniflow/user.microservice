@@ -29,3 +29,66 @@ jobs:
       - name: Type checking code with Mypy
         run: |
           tox -e type
+
+  loadtest:
+    name: Run loadtests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
+          MYSQL_ROOT_PASSWORD: rootpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install locust python-dotenv
+
+      - name: Wait for MySQL to be ready
+        run: |
+          until mysqladmin ping -h 127.0.0.1 -u root -prootpass --silent; do
+            echo "Waiting for MySQL..."
+            sleep 3
+          done
+
+      - name: Run DB setup script
+        run: |
+          mysql -h 127.0.0.1 -u root -prootpass testdb < ./scripts/user_service_db.sql
+
+      - name: Generate .env file for FastAPI
+        run: |
+          cat <<EOF > .env
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_NAME=testdb
+          DB_USER=testuser
+          DB_PASSWORD=testpass
+          EOF
+
+      - name: Start FastAPI app in background
+        run: |
+          python -m app.main
+          sleep 5
+
+      - name: Run Locust in headless mode
+        run: |
+          locust -f locustfile.py --host http://localhost:8002 --headless -u 10 -r 2 -t 30s
