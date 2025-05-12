@@ -92,4 +92,4 @@ jobs:
 
       - name: Run Locust in headless mode
         run: |
-          locust -f locustfile.py --host http://localhost:8002 --headless -u 10 -r 2 -t 30s
+          locust -f tests/loadtests/locustfile.py --host http://localhost:8002 --headless -u 10 -r 2 -t 30s
