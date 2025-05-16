@@ -18,13 +18,6 @@ class FastAPIUser(HttpUser):
         )
 
     @task(2)
-    def get_favorites(self):
-        self.client.get(
-            f"/user/{self.user_id}/favorites",
-            headers=self.headers
-        )
-
-    @task(2)
     def get_watchlist(self):
         self.client.get(
             f"/user/{self.user_id}/watchlist",
