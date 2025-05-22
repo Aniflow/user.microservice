@@ -1,11 +1,22 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import CONFIG
+from .core.messaging.kafka_consumer import kafka_consume
 from .routers.user_router import router as user_router
 
-app = FastAPI(title="Aniflow Anime Microservice")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(kafka_consume())
+    yield
+    task.cancel()
+
+app = FastAPI(lifespan=lifespan, title="Aniflow Anime Microservice")
 
 app.add_middleware(
     CORSMiddleware,

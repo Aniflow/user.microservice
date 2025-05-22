@@ -5,6 +5,8 @@ from ..data.user_repository import UserRepository
 from ...models.user import User
 from ...models.watchlist import Entry
 
+from ..projection.projection import add_favorite
+
 
 class UserService:
     """Handles business logic related to users."""
@@ -62,3 +64,9 @@ class UserService:
                    last_updated=datetime.now(timezone.utc)
                 )
             ]
+
+    @staticmethod
+    async def user_favorited_event(event: dict):
+        if event["event_type"] == "AnimeFavorited":
+            add_favorite(event["user_id"], event["anime_id"])
+            print(f"[APPLIED] User {event['user_id']} favorited anime {event['anime_id']}")  # Noqa: E501
