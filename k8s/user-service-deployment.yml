@@ -28,7 +28,7 @@ spec:
               memory: "512Mi"
           env:
             - name: KAFKA_BOOTSTRAP
-              value: "kafka:9092"
+              value: "kafka-service.kafka.svc.cluster.local:9092"
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
