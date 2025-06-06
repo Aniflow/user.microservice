@@ -1,8 +1,9 @@
 import json
 from aiokafka import AIOKafkaConsumer
 from ..services.user_service import UserService
+from ...config import CONFIG
 
-KAFKA_BOOTSTRAP = "localhost:9092"
+KAFKA_BOOTSTRAP = CONFIG.KAFKA_BOOTSTRAP
 TOPIC = "anime-events"
 GROUP_ID = "anime-projection"
 

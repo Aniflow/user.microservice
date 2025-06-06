@@ -12,6 +12,7 @@ class BaseConfig:
     ALLOW_METHODS: str = os.getenv("ALLOWED_METHODS", "*")
     ALLOW_HEADERS: str = os.getenv("ALLOWED_HEADERS", "*")
     ALLOW_CREDENTIALS: bool = os.getenv("ALLOW_CREDENTIALS", "True").lower() in ("true", "1")  # Noqa: E501
+    KAFKA_BOOTSTRAP: str = os.getenv("KAFKA_BOOTSTRAP", "localhost:9092")
 
 
 class DevelopmentConfig(BaseConfig):
