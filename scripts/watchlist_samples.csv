@@ -1,0 +1,5 @@
+id,user_id,anime_id,episodes_watched,completed,last_updated
+1,1,101,5,False,2025-03-01 12:15:00
+2,1,102,10,True,2025-03-01 12:20:00
+3,2,103,12,False,2025-03-02 13:10:00
+4,3,104,8,False,2025-03-03 14:10:00

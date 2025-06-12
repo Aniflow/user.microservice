@@ -1,0 +1,26 @@
+CREATE DATABASE IF NOT EXISTS user_service_db;
+
+USE user_service_db;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE favorites (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    anime_id INT NOT NULL,
+    favorited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE watchlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    anime_id INT NOT NULL,
+    episodes_watched INT DEFAULT 0,
+    completed BOOLEAN DEFAULT FALSE,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE(user_id, anime_id)
+);
