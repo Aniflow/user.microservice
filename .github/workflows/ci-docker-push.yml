@@ -1,4 +1,4 @@
-name: Pipeline
+name: Push to dockerhub 
 
 on:
   push:
